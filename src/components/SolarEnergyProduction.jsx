@@ -1,4 +1,5 @@
 import EnergyProductionCard from "./EnergyProductionCard";
+import { Button } from "@/components/ui/button";
 
 const SolarEnergyProduction = () => {
   const energyProductionData = [
@@ -29,6 +30,9 @@ const SolarEnergyProduction = () => {
             />
           );
         })}
+      </div>
+      <div className="mt-4">
+        <Button>Click me</Button>
       </div>
     </section>
   );
