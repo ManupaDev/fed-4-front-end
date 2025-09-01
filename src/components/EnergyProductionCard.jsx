@@ -24,9 +24,17 @@ const EnergyProductionCard = (props) => {
   //   }
 
   const [isSelected, setIsSelected] = useState(false);
+  // const [num, setNum] = useState(0);
+  // const [user, setUser] = useState({ name: "Manupa", age: 24 });
+  // const [nums, setNums] = useState([2, 3, 5, 7]);
 
   const handleClick = () => {
     setIsSelected(!isSelected);
+    // setNum(num + 5);
+    // setNum((n) => n + 1);
+    // setNum(42);
+    // setUser({ ...user, age: 25 });
+    // setNums( [...nums, 11] );
   };
 
   return (
@@ -43,7 +51,9 @@ const EnergyProductionCard = (props) => {
           Anomaly
         </div>
       )}
+      {/* <div>{nums.toString()}</div> */}
       <div className="flex flex-col items-center gap-2 p-6 pb-2">
+        {/* <span className="block">{num}</span> */}
         <span className="block text-gray-600 text-sm font-medium">
           {props.day}
         </span>
