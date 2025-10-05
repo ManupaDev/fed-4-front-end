@@ -1,6 +1,10 @@
+import { Button } from "@/components/ui/button";
+import { getEnergyGenerationRecordsBySolarUnit } from "@/lib/api/energy-generation-record";
+import { useSelector } from "react-redux";
 import EnergyProductionCards from "./EnergyProductionCards";
 import Tab from "./Tab";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const SolarEnergyProduction = () => {
   const energyProductionData = [
@@ -35,7 +39,31 @@ const SolarEnergyProduction = () => {
     }
   });
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [energyGenerationRecords, setEnergyGenerationRecords] = useState([]);
+  const [error, setError] = useState(null);
+  const [isError, setIsError] = useState(false);
+
   // console.log(filteredEnergyProductionData);
+  useEffect(() => {
+    getEnergyGenerationRecordsBySolarUnit("68e28831fe732ccfcd426e71")
+      .then((data) => {
+        setEnergyGenerationRecords(data);
+      })
+      .catch((error) => {
+        setIsError(true);
+        setError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, []);
+
+  // const handleGetData = () => {
+  //   getEnergyGenerationRecordsBySolarUnit("68e28831fe732ccfcd426e71");
+  // };
+
+  console.log(energyGenerationRecords);
 
   return (
     <section className="px-12 font-[Inter] py-6">
@@ -48,6 +76,9 @@ const SolarEnergyProduction = () => {
           return <Tab key={tab.value} tab={tab} />;
         })}
       </div>
+      {/* <div className="mt-4">
+        <Button onClick={handleGetData}>Get Data</Button>
+      </div> */}
       <EnergyProductionCards
         energyProductionData={filteredEnergyProductionData}
       />
