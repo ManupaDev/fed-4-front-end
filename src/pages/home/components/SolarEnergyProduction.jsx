@@ -5,6 +5,7 @@ import EnergyProductionCards from "./EnergyProductionCards";
 import Tab from "./Tab";
 import { useEffect } from "react";
 import { useState } from "react";
+import { useGetEnergyGenerationRecordsBySolarUnitQuery } from "@/lib/redux/query";
 
 const SolarEnergyProduction = () => {
   const energyProductionData = [
@@ -39,31 +40,10 @@ const SolarEnergyProduction = () => {
     }
   });
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [energyGenerationRecords, setEnergyGenerationRecords] = useState([]);
-  const [error, setError] = useState(null);
-  const [isError, setIsError] = useState(false);
+  const { data, isLoading, isError, error } =
+    useGetEnergyGenerationRecordsBySolarUnitQuery("68e28831fe732ccfcd426e71");
 
-  // console.log(filteredEnergyProductionData);
-  useEffect(() => {
-    getEnergyGenerationRecordsBySolarUnit("68e28831fe732ccfcd426e71")
-      .then((data) => {
-        setEnergyGenerationRecords(data);
-      })
-      .catch((error) => {
-        setIsError(true);
-        setError(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
-
-  // const handleGetData = () => {
-  //   getEnergyGenerationRecordsBySolarUnit("68e28831fe732ccfcd426e71");
-  // };
-
-  console.log(energyGenerationRecords);
+  console.log(data, isLoading);
 
   return (
     <section className="px-12 font-[Inter] py-6">
