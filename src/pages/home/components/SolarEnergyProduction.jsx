@@ -34,7 +34,10 @@ const SolarEnergyProduction = () => {
   //   : [];
 
   const { data, isLoading, isError, error } =
-    useGetEnergyGenerationRecordsBySolarUnitQuery("68ebc456189fc937242ec221");
+    useGetEnergyGenerationRecordsBySolarUnitQuery({
+      id: "68ebc456189fc937242ec221",
+      groupBy: "date",
+    });
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -44,59 +47,12 @@ const SolarEnergyProduction = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  const formattedData = data.map((el) => {
+  const newEnergyProductionData = data.slice(0, 7).map((el) => {
     return {
-      ...el,
-      timestamp: toDate(el.timestamp),
-    };
-  });
-
-  const latestGenerationRecord = formattedData[0];
-  const sevenDaysAgo = subDays(latestGenerationRecord.timestamp, 6);
-
-  const filteredData = formattedData.filter((el) => {
-    return el.timestamp >= sevenDaysAgo;
-  });
-
-  const mappedData = filteredData.map((el) => {
-    return {
-      ...el,
-      date: format(el.timestamp, "yyyy-MM-dd"),
-    };
-  });
-
-  // console.log(mappedData);
-
-  const groupedData = {};
-
-  mappedData.forEach((el) => {
-    if (groupedData[el.date]) {
-      groupedData[el.date].push(el);
-    } else {
-      groupedData[el.date] = [];
-      groupedData[el.date].push(el);
-    }
-  });
-
-  // console.log(groupedData);
-
-  const groupedDataArray = Object.entries(groupedData);
-  // console.log(groupedDataArray);
-
-  const calculateTotalProduction = (data) => {
-    let total = 0;
-    data.forEach((el) => {
-      total += el.energyGenerated;
-    });
-    return total;
-  };
-
-  const newEnergyProductionData = groupedDataArray.map(([date, data]) => {
-    return {
-      day: format(toDate(date), "EEE"),
-      date: format(toDate(date), "MMM d"),
+      day: format(toDate(el._id.date), "EEE"),
+      date: format(toDate(el._id.date), "MMM d"),
+      production: el.totalEnergy,
       hasAnomaly: false,
-      production: calculateTotalProduction(data),
     };
   });
 
@@ -107,6 +63,8 @@ const SolarEnergyProduction = () => {
       return el.hasAnomaly;
     }
   });
+
+  console.log(filteredEnergyProductionData);
 
   return (
     <section className="px-12 font-[Inter] py-6">
