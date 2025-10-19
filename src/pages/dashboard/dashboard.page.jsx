@@ -1,5 +1,6 @@
 import { useGetEnergyGenerationRecordsBySolarUnitQuery } from "@/lib/redux/query";
 import DataCard from "./components/DataCard";
+import DataChart from "./components/DataChart";
 
 const DashboardPage = () => {
   const { data, isLoading, isError, error } =
@@ -20,6 +21,14 @@ const DashboardPage = () => {
           isError={isError}
           error={error}
           title="Last 7 Days Energy Production" 
+        />
+      </div>
+      <div className="mt-8">
+        <DataChart 
+          data={data} 
+          isLoading={isLoading} 
+          isError={isError}
+          error={error}          
         />
       </div>
     </main>
