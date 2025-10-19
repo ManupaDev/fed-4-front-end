@@ -6,58 +6,91 @@ import {
 } from "@/components/ui/chart";
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import { format, toDate } from "date-fns";
+import { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const DataCard = ({ data, isLoading, isError, error }) => {
+  const [selectedRange, setSelectedRange] = useState("7");
+
+  const handleRangeChange = (range) => {
+    setSelectedRange(range);
+  };
+
   if (isLoading) return null;
 
   if (!data || isError) {
     return null;
   }
 
-  const last30DaysEnergyProduction = data.slice(0, 30).map((el) => {
-    return {
-      date: format(toDate(el._id.date), "MMM d"),
-      energy: el.totalEnergy,
-    };
-  });
+  const lastSelectedRangeDaysEnergyProduction = data
+    .slice(0, parseInt(selectedRange))
+    .map((el) => {
+      return {
+        date: format(toDate(el._id.date), "MMM d"),
+        energy: el.totalEnergy,
+      };
+    });
 
   const chartConfig = {
     energy: {
-      label: "Energy",
+      label: "Energy (kWh)",
       color: "oklch(54.6% 0.245 262.881)",
     },
   };
 
-  const title = "Last 30 days energy production";
+  const title = "Energy Production Chart";
 
-  console.log(last30DaysEnergyProduction);
+  console.log(lastSelectedRangeDaysEnergyProduction);
 
   return (
     <Card className="rounded-md p-4">
-      <h2 className="text-xl font-medium text-foreground">{title}</h2>
+      <div className="flex justify-between items-center gap-2">
+        <h2 className="text-xl font-medium text-foreground">{title}</h2>
+        <div>
+          <Select value={selectedRange} onValueChange={handleRangeChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue className="text-foreground" placeholder="Select Range" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7">7 Days</SelectItem>
+              <SelectItem value="30">30 Days</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <div>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={last30DaysEnergyProduction}
+            data={lastSelectedRangeDaysEnergyProduction}
             margin={{
-              left: -20,
-              right: 12,
+              left: 40,
+              right: 20,
+              top: 20,
+              bottom: 20,
             }}
           >
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
-              tickLine={false}
-              axisLine={false}
+              tickLine={true}
+              axisLine={true}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tick={false}
+              label={{ value: "Date", position: "insideBottom", offset: -5 }}
             />
             <YAxis
-              tickLine={false}
-              axisLine={false}
+              tickLine={true}
+              axisLine={true}
               tickMargin={8}
-              tickCount={3}
+              tickCount={10}
+              label={{ value: "kWh", angle: -90, position: "insideLeft" }}
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Area
