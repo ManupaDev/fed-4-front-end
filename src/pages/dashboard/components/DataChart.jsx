@@ -41,7 +41,7 @@ const DataCard = ({ data, isLoading, isError, error }) => {
             accessibilityLayer
             data={last30DaysEnergyProduction}
             margin={{
-              left: -25,
+              left: -20,
               right: 12,
             }}
           >
