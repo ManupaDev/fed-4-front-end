@@ -16,17 +16,17 @@ const items = [
   {
     title: "Dashboard",
     url: "/dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard className="w-8 h-8" size={32}/>,
   },
   {
     title: "Anomalies",
     url: "/dashboard/anomaly",
-    icon: TriangleAlert,
+    icon: <TriangleAlert className="w-8 h-8" size={32}/>,
   },
-  {
+  { 
     title: "Analytics",
     url: "/dashboard/analytics",
-    icon: ChartLine,
+    icon: <ChartLine className="w-8 h-8" size={32}/>,
   },
 ];
 
@@ -44,7 +44,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url}>
-                      <item.icon className="w-8 h-8" size={32} />
+                      {item.icon}
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

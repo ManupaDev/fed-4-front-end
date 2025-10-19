@@ -1,12 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { getEnergyGenerationRecordsBySolarUnit } from "@/lib/api/energy-generation-record";
+import { useGetEnergyGenerationRecordsBySolarUnitQuery } from "@/lib/redux/query";
+import { format, toDate } from "date-fns";
 import { useSelector } from "react-redux";
 import EnergyProductionCards from "./EnergyProductionCards";
 import Tab from "./Tab";
-import { useEffect } from "react";
-import { useState } from "react";
-import { subDays, toDate, format } from "date-fns";
-import { useGetEnergyGenerationRecordsBySolarUnitQuery } from "@/lib/redux/query";
 
 const SolarEnergyProduction = () => {
   const energyProductionData = [
