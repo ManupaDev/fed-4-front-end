@@ -12,6 +12,8 @@ import DashboardLayout from "./layouts/dashboard.layout.jsx";
 import SignInPage from "./pages/auth/sign-in-page.jsx";
 import SignUpPage from "./pages/auth/sign-up-page.jsx";
 
+import ProtectedLayout from "./layouts/protected.layout.jsx";
+
 import { store } from "@/lib/redux/store.js";
 import { Provider } from "react-redux";
 import { ClerkProvider } from "@clerk/clerk-react";
@@ -35,8 +37,10 @@ createRoot(document.getElementById("root")).render(
               <Route element={<MainLayout />}>
                 <Route path="/" element={<HomePage />} />
               </Route>
-              <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<DashboardPage />} />
+              <Route element={<ProtectedLayout />}>
+                <Route element={<DashboardLayout />}>
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                </Route>
               </Route>
             </Route>
           </Routes>
