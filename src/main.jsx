@@ -9,24 +9,38 @@ import DashboardPage from "./pages/dashboard/dashboard.page.jsx";
 import RootLayout from "./layouts/root.layout.jsx";
 import MainLayout from "./layouts/main.layout.jsx";
 import DashboardLayout from "./layouts/dashboard.layout.jsx";
+import SignInPage from "./pages/auth/sign-in-page.jsx";
+import SignUpPage from "./pages/auth/sign-up-page.jsx";
 
 import { store } from "@/lib/redux/store.js";
 import { Provider } from "react-redux";
+import { ClerkProvider } from "@clerk/clerk-react";
+
+// Import your Publishable Key
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
+if (!PUBLISHABLE_KEY) {
+  throw new Error("Add your Clerk Publishable Key to the .env file");
+}
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route element={<RootLayout />}>
-            <Route element={<MainLayout />}>
-              <Route path="/" element={<HomePage />} />
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+          <Routes>
+            <Route element={<RootLayout />}>
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+              <Route element={<MainLayout />}>
+                <Route path="/" element={<HomePage />} />
+              </Route>
+              <Route element={<DashboardLayout />}>
+                <Route path="/dashboard" element={<DashboardPage />} />
+              </Route>
             </Route>
-            <Route element={<DashboardLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-            </Route>
-          </Route>
-        </Routes>
+          </Routes>
+        </ClerkProvider>
       </BrowserRouter>
     </Provider>
   </StrictMode>
