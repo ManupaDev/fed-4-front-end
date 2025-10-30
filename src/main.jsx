@@ -11,7 +11,8 @@ import MainLayout from "./layouts/main.layout.jsx";
 import DashboardLayout from "./layouts/dashboard.layout.jsx";
 import SignInPage from "./pages/auth/sign-in-page.jsx";
 import SignUpPage from "./pages/auth/sign-up-page.jsx";
-
+import AdminPage from "./pages/admin/admin.page.jsx";
+import AuthorizedLayout from "./layouts/authorized.layout.jsx";
 import ProtectedLayout from "./layouts/protected.layout.jsx";
 
 import { store } from "@/lib/redux/store.js";
@@ -40,6 +41,9 @@ createRoot(document.getElementById("root")).render(
               <Route element={<ProtectedLayout />}>
                 <Route element={<DashboardLayout />}>
                   <Route path="/dashboard" element={<DashboardPage />} />
+                </Route>
+                <Route element={<AuthorizedLayout />}>
+                  <Route path="/admin/dashboard" element={<AdminPage />} />
                 </Route>
               </Route>
             </Route>
