@@ -1,14 +1,12 @@
-import { useGetSolarUnitByClerkUserIdQuery } from "@/lib/redux/query";
+import { useGetSolarUnitForUserQuery } from "@/lib/redux/query";
 import DataCard from "./components/DataCard";
 import DataChart from "./components/DataChart";
 import { useUser } from "@clerk/clerk-react";
 
 const DashboardPage = () => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
-  const { data: solarUnit, isLoading: isLoadingSolarUnit, isError: isErrorSolarUnit, error: errorSolarUnit } = useGetSolarUnitByClerkUserIdQuery({
-    clerkUserId: user?.id,
-  });
+  const { data: solarUnit, isLoading: isLoadingSolarUnit, isError: isErrorSolarUnit, error: errorSolarUnit } = useGetSolarUnitForUserQuery();
 
   if (isLoadingSolarUnit) {
     return <div>Loading...</div>;
