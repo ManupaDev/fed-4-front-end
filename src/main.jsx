@@ -14,6 +14,7 @@ import SignInPage from "./pages/auth/sign-in-page.jsx";
 import SignUpPage from "./pages/auth/sign-up-page.jsx";
 import SolarUnitsPage from "./pages/admin/solar-units.page.jsx";
 import SettingsPage from "./pages/admin/settings.page.jsx";
+import SolarUnitDetailPage from "./pages/admin/solar-unit-detail.page.jsx";
 import AuthorizedLayout from "./layouts/authorized.layout.jsx";
 import ProtectedLayout from "./layouts/protected.layout.jsx";
 import AdminPage from "./pages/admin/admin.page.jsx";
@@ -49,6 +50,7 @@ createRoot(document.getElementById("root")).render(
                   <Route element={<AdminLayout />}>
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/admin/solar-units" element={<SolarUnitsPage />} />
+                    <Route path="/admin/solar-units/:id" element={<SolarUnitDetailPage />} />
                     <Route path="/admin/settings" element={<SettingsPage />} />
                   </Route>
                 </Route>
