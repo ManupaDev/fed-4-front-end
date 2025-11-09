@@ -21,8 +21,7 @@ export default function SolarUnitDetailPage() {
   }
 
   const handleEdit = () => {
-    // TODO: Navigate to edit page
-    console.log("Edit solar unit:", solarUnit._id);
+    navigate(`/admin/solar-units/${solarUnit._id}/edit`);
   };
 
   const handleDelete = () => {
