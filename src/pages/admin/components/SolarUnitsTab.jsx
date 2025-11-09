@@ -5,6 +5,7 @@ import { useGetSolarUnitsQuery } from "@/lib/redux/query";
 import { Zap } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 export function SolarUnitsTab() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,7 +31,9 @@ export function SolarUnitsTab() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <Button>Add New Unit</Button>
+        <Button asChild>
+          <Link to="/admin/solar-units/create">Add New Unit</Link>
+        </Button>
       </div>
 
       <div className="w-full max-w-md">
@@ -53,8 +56,8 @@ export function SolarUnitsTab() {
               </div>
               <div
                 className={`px-3 py-1 rounded-full text-xs font-medium ${unit.status === "Active"
-                    ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-800"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-gray-100 text-gray-800"
                   }`}
               >
                 {unit.status}
