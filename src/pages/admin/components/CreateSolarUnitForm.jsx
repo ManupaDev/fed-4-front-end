@@ -13,23 +13,28 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useCreateSolarUnitMutation } from "@/lib/redux/query"
 
 const formSchema = z.object({
     serialNumber: z.string().min(1, { message: "Serial number is required" }),
     installationDate: z.string().min(1, { message: "Installation date is required" }),
     capacity: z.number().positive({ message: "Capacity must be a positive number" }),
     status: z.enum(["ACTIVE", "INACTIVE", "MAINTENANCE"], { message: "Please select a valid status" }),
-  });
+});
 
 export function CreateSolarUnitForm() {
     const form = useForm({
         resolver: zodResolver(formSchema),
     })
 
-    function onSubmit(values) {
-        // Do something with the form values.
-        // ✅ This will be type-safe and validated.
-        console.log(values)
+    const [createSolarUnit, { isLoading: isCreatingSolarUnit }] = useCreateSolarUnitMutation();
+
+    async function onSubmit(values) {
+        try {
+            await createSolarUnit(values);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     return (
