@@ -57,7 +57,7 @@ const DataCard = ({ title = "Solar Energy Production", solarUnitId }) => {
   console.log(data);
 
   // Get last 7 days of data
-  const last7Days = data.slice(0, 7);
+  const last7Days = data
 
   // Apply anomaly detection with options
   const dataWithAnomalies = detectAnomalies(last7Days, detectionMethod, {
@@ -113,12 +113,11 @@ const DataCard = ({ title = "Solar Energy Production", solarUnitId }) => {
             >
               <option value="windowAverage">Window Average (7-day)</option>
               <option value="absolute">Absolute Threshold</option>
-              <option value="combined">Combined (Recommended)</option>
             </select>
           </div>
 
           {/* Threshold Controls for Teaching */}
-          {(detectionMethod === 'windowAverage' || detectionMethod === 'combined') && (
+          {detectionMethod === 'windowAverage' && (
             <div className="flex flex-col gap-1">
               <label className="text-xs text-gray-500 font-medium">
                 Threshold: {thresholdPercent}% below average
@@ -135,7 +134,7 @@ const DataCard = ({ title = "Solar Energy Production", solarUnitId }) => {
           )}
 
           {/* Absolute Minimum Threshold Control */}
-          {(detectionMethod === 'absolute' || detectionMethod === 'combined') && (
+          {detectionMethod === 'absolute' && (
             <div className="flex flex-col gap-1">
               <label className="text-xs text-gray-500 font-medium">
                 Minimum: {absoluteMin} kWh

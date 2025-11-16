@@ -81,64 +81,6 @@ export function detectAbsoluteThresholdAnomalies(records, minimumThreshold = 5) 
 }
 
 /**
- * Method 3: COMBINED DETECTION (Recommended)
- * Uses both window average AND absolute threshold
- *
- * This catches both:
- * 1. Days that are unusually low compared to the window
- * 2. Days that are critically low regardless of context
- *
- * @param {Array} records - Array of energy generation records
- * @param {Number} windowThresholdPercent - Percent below window average (default 40%)
- * @param {Number} absoluteThreshold - Minimum acceptable kWh (default 5)
- * @returns {Array} Records with anomaly flags
- */
-export function detectCombinedAnomalies(records, windowThresholdPercent = 40, absoluteThreshold = 5) {
-  if (records.length === 0) return records;
-
-  // Calculate window average
-  const totalEnergy = records.reduce((sum, record) => sum + record.totalEnergy, 0);
-  const averageEnergy = totalEnergy / records.length;
-
-  return records.map((record) => {
-    const energy = record.totalEnergy;
-
-    // Check 1: Below window average
-    const deviationPercent = ((averageEnergy - energy) / averageEnergy) * 100;
-    const isBelowAverage = deviationPercent > windowThresholdPercent;
-
-    // Check 2: Below absolute minimum
-    const isCriticallyLow = energy < absoluteThreshold;
-
-    // Flag as anomaly if EITHER condition is true
-    const isAnomaly = isBelowAverage || isCriticallyLow;
-
-    // Determine type and reason
-    let anomalyType = null;
-    let anomalyReason = null;
-
-    if (isCriticallyLow) {
-      anomalyType = 'CRITICAL_LOW';
-      anomalyReason = `Critical: Only ${energy.toFixed(1)} kWh (minimum: ${absoluteThreshold} kWh)`;
-    } else if (isBelowAverage) {
-      anomalyType = 'BELOW_AVERAGE';
-      anomalyReason = `${deviationPercent.toFixed(1)}% below window average (${averageEnergy.toFixed(1)} kWh)`;
-    }
-
-    return {
-      ...record,
-      hasAnomaly: isAnomaly,
-      anomalyType,
-      anomalyReason,
-      // Teaching stats
-      windowAverage: averageEnergy.toFixed(1),
-      deviationPercent: deviationPercent.toFixed(1),
-      deviationAmount: (averageEnergy - energy).toFixed(1)
-    };
-  });
-}
-
-/**
  * MAIN DETECTION FUNCTION
  * Easy to switch between different methods for teaching
  *
@@ -163,8 +105,6 @@ export function detectAnomalies(records, method = 'windowAverage', options = {})
       return detectWindowAverageAnomalies(sortedRecords, windowThresholdPercent);
     case 'absolute':
       return detectAbsoluteThresholdAnomalies(sortedRecords, absoluteThreshold);
-    case 'combined':
-      return detectCombinedAnomalies(sortedRecords, windowThresholdPercent, absoluteThreshold);
     default:
       return detectWindowAverageAnomalies(sortedRecords, windowThresholdPercent);
   }
