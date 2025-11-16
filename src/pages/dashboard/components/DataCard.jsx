@@ -50,11 +50,9 @@ const DataCard = ({ title = "Solar Energy Production", solarUnitId }) => {
     );
   }
 
-  if (!data || isError || data.length === 0) {
+  if (!data || isError) {
     return null;
   }
-
-  console.log(data);
 
   // Get last 7 days of data
   const last7Days = data
