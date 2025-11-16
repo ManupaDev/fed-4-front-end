@@ -25,10 +25,7 @@ const DashboardPage = () => {
         Welcome back to your Solar Energy Production Dashboard
       </p>
       <div className="mt-8">
-        <DataCard
-          solarUnitId={solarUnit._id}
-          title="Last 7 Days Energy Production"
-        />
+        <DataCard solarUnitId={solarUnit._id} />
       </div>
       <div className="mt-8">
         <DataChart solarUnitId={solarUnit._id} />
